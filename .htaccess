@@ -1,0 +1,26 @@
+
+RewriteEngine on
+
+RewriteOptions inherit
+# 1. Nonaktifkan Directory Listing (mencegah orang melihat isi folder)
+Options -Indexes
+# 2. Blokir akses ke file sensitif (konfigurasi, log, database, composer)
+<FilesMatch "\.(env|sql|log|ini|json|lock|bak|config|dist|md|yml|yaml)$">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+# 3. Blokir akses ke file atau folder tersembunyi (dimulai dengan titik, contoh .git)
+<FilesMatch "^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
