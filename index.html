@@ -351,9 +351,186 @@
       }
       .dt-button:hover { background: var(--accent) !important; border-color: var(--accent) !important; }
 
-      /* SearchPanes */
-      .dtsp-searchPane  { background: var(--bg-card2) !important; border-radius: 10px !important; }
-      .dtsp-panesContainer { background: transparent !important; }
+      /* ═══════════════════════════════════════════════
+         DATATABLES SEARCHPANES & FILTER DARK OVERRIDE
+      ═══════════════════════════════════════════════ */
+      .dtsp-panesContainer {
+        background: transparent !important;
+        margin-bottom: 20px !important;
+        color: var(--text-primary) !important;
+      }
+
+      /* Container header & action buttons */
+      .dtsp-panesContainer .dtsp-titleRow {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        margin-bottom: 12px !important;
+        padding: 0 4px !important;
+      }
+      .dtsp-panesContainer .dtsp-title {
+        color: #e2e8f0 !important;
+        font-size: .9rem !important;
+        font-weight: 700 !important;
+        letter-spacing: .5px !important;
+      }
+      .dtsp-panesContainer .dtsp-titleRow button,
+      .dtsp-panesContainer .dtsp-clearAll,
+      .dtsp-panesContainer .dtsp-collapseAll,
+      .dtsp-panesContainer .dtsp-showAll {
+        background: var(--bg-card2) !important;
+        color: #cbd5e1 !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 5px 12px !important;
+        font-size: .8rem !important;
+        font-weight: 500 !important;
+        margin-left: 6px !important;
+        transition: all .2s ease !important;
+        cursor: pointer !important;
+      }
+      .dtsp-panesContainer .dtsp-titleRow button:hover,
+      .dtsp-panesContainer .dtsp-clearAll:hover,
+      .dtsp-panesContainer .dtsp-collapseAll:hover,
+      .dtsp-panesContainer .dtsp-showAll:hover {
+        background: var(--accent) !important;
+        color: #ffffff !important;
+        border-color: var(--accent) !important;
+      }
+
+      /* SearchPane Card */
+      .dtsp-panesContainer .dtsp-searchPane {
+        background: var(--bg-card2) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 16px rgba(0,0,0,.25) !important;
+      }
+
+      /* TopRow inside each pane */
+      .dtsp-searchPane .dtsp-topRow {
+        background: rgba(255,255,255,.04) !important;
+        border-bottom: 1px solid var(--border) !important;
+        padding: 10px 14px !important;
+        display: flex !important;
+        align-items: center !important;
+        color: var(--text-primary) !important;
+      }
+      .dtsp-searchPane .dtsp-topRow .dtsp-searchCont {
+        padding: 0 !important;
+      }
+      .dtsp-searchPane .dtsp-topRow input.dtsp-search {
+        background: var(--bg-dark) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 6px !important;
+        padding: 5px 10px !important;
+        font-size: .82rem !important;
+      }
+      .dtsp-searchPane .dtsp-topRow input.dtsp-search:focus {
+        border-color: var(--accent) !important;
+        outline: none !important;
+      }
+      .dtsp-searchPane .dtsp-topRow button.dtsp-paneButton,
+      .dtsp-searchPane .dtsp-topRow button.dtsp-searchIcon,
+      .dtsp-searchPane .dtsp-topRow button.dtsp-paneInputButton {
+        background: rgba(255,255,255,.06) !important;
+        color: var(--text-muted) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 6px !important;
+        padding: 4px 8px !important;
+        margin-left: 4px !important;
+        transition: all .2s !important;
+        cursor: pointer !important;
+      }
+      .dtsp-searchPane .dtsp-topRow button.dtsp-paneButton:hover,
+      .dtsp-searchPane .dtsp-topRow button.dtsp-searchIcon:hover,
+      .dtsp-searchPane .dtsp-topRow button.dtsp-paneInputButton:hover {
+        background: var(--accent) !important;
+        color: #ffffff !important;
+        border-color: var(--accent) !important;
+      }
+
+      /* DataTables structure inside SearchPane */
+      .dtsp-searchPane .dataTables_wrapper,
+      .dtsp-searchPane .dataTables_scroll,
+      .dtsp-searchPane .dataTables_scrollHead,
+      .dtsp-searchPane .dataTables_scrollBody {
+        background: transparent !important;
+        border: none !important;
+      }
+      .dtsp-searchPane table.dataTable {
+        background: transparent !important;
+        margin: 0 !important;
+        width: 100% !important;
+        border-collapse: collapse !important;
+      }
+      .dtsp-searchPane table.dataTable thead {
+        display: none !important;
+      }
+
+      /* SearchPane table rows & cells */
+      .dtsp-searchPane table.dataTable tbody tr,
+      .dtsp-searchPane table.dataTable.display tbody tr.odd,
+      .dtsp-searchPane table.dataTable.display tbody tr.even {
+        background: transparent !important;
+        border-bottom: 1px solid rgba(255,255,255,.04) !important;
+        transition: background .15s !important;
+      }
+      .dtsp-searchPane table.dataTable tbody tr td,
+      .dtsp-searchPane table.dataTable tbody tr.odd td,
+      .dtsp-searchPane table.dataTable tbody tr.even td,
+      .dtsp-searchPane table.dataTable tbody tr td.sorting_1,
+      .dtsp-searchPane table.dataTable.display tbody tr.odd > .sorting_1,
+      .dtsp-searchPane table.dataTable.display tbody tr.even > .sorting_1 {
+        background: transparent !important;
+        color: var(--text-primary) !important;
+        padding: 8px 14px !important;
+        font-size: .84rem !important;
+        border: none !important;
+        cursor: pointer !important;
+      }
+      .dtsp-searchPane table.dataTable tbody tr:hover td,
+      .dtsp-searchPane table.dataTable tbody tr:hover {
+        background: rgba(99,102,241,.14) !important;
+        color: #ffffff !important;
+      }
+      .dtsp-searchPane table.dataTable tbody tr.selected td,
+      .dtsp-searchPane table.dataTable tbody tr.selected {
+        background: linear-gradient(90deg, rgba(99,102,241,.3), rgba(139,92,246,.2)) !important;
+        color: #ffffff !important;
+        font-weight: 600 !important;
+      }
+
+      /* Text and Pill */
+      .dtsp-searchPane .dtsp-nameCont {
+        color: var(--text-primary) !important;
+        font-size: .84rem !important;
+      }
+      .dtsp-searchPane .dtsp-nameCont span {
+        color: var(--text-primary) !important;
+      }
+      .dtsp-searchPane .dtsp-pill,
+      .dtsp-searchPane span.dtsp-pill {
+        background: rgba(255,255,255,.08) !important;
+        color: var(--accent-3) !important;
+        border: 1px solid rgba(6,182,212,.2) !important;
+        border-radius: 20px !important;
+        padding: 2px 9px !important;
+        font-size: .75rem !important;
+        font-weight: 700 !important;
+      }
+      .dtsp-searchPane table.dataTable tbody tr.selected .dtsp-pill {
+        background: var(--accent) !important;
+        color: #ffffff !important;
+        border-color: transparent !important;
+      }
+      .dtsp-searchPane .dtsp-emptyBins {
+        color: var(--text-muted) !important;
+        font-size: .8rem !important;
+        text-align: center !important;
+        padding: 12px !important;
+      }
 
       /* Scrollbar */
       ::-webkit-scrollbar { width: 6px; height: 6px; }
