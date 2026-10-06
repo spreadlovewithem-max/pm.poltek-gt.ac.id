@@ -5,22 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Wisuda</title>
+
+    <!-- Bootstrap 5 -->
     <link
       rel="stylesheet"
       type="text/css"
       href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
     />
+    <!-- DataTables + Bootstrap 5 + extensions -->
     <link
       rel="stylesheet"
       type="text/css"
       href="https://cdn.datatables.net/v/bs5/jqc-1.12.4/moment-2.29.4/dt-2.1.8/b-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.4/r-3.0.3/sl-2.1.0/datatables.min.css"
     />
     <link rel="stylesheet" type="text/css" href="css/generator-base.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="css/editor.bootstrap5.min.css"
-    />
     <link
       rel="stylesheet"
       type="text/css"
@@ -32,6 +30,7 @@
       href="https://cdn.datatables.net/searchpanes/2.3.2/css/searchPanes.dataTables.css"
     />
 
+    <!-- DataTables JS -->
     <script
       type="text/javascript"
       charset="utf-8"
@@ -40,16 +39,6 @@
     <script
       type="text/javascript"
       src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="js/dataTables.editor.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="js/editor.bootstrap5.min.js"
     ></script>
     <script
       type="text/javascript"
@@ -71,6 +60,13 @@
       charset="utf-8"
       src="https://cdn.datatables.net/searchpanes/2.3.2/js/searchPanes.dataTables.js"
     ></script>
+
+    <style>
+      .btn-action { margin-right: 3px; }
+      .modal-header { background-color: #0d6efd; color: #fff; }
+      .modal-header .btn-close { filter: invert(1); }
+      #crud-buttons { display: none; }
+    </style>
   </head>
   <body class="bootstrap5 bg-light">
     <div class="container pt-4">
@@ -85,6 +81,20 @@
           >
         </h2>
       </div>
+
+      <!-- Tombol CRUD (hanya muncul kalau sudah login) -->
+      <div id="crud-buttons" class="mb-2">
+        <button id="btn-add" class="btn btn-success btn-sm btn-action">
+          ➕ Tambah
+        </button>
+        <button id="btn-edit" class="btn btn-primary btn-sm btn-action" disabled>
+          ✏️ Edit
+        </button>
+        <button id="btn-delete" class="btn btn-danger btn-sm btn-action" disabled>
+          🗑️ Hapus
+        </button>
+      </div>
+
       <table
         cellpadding="0"
         cellspacing="0"
@@ -105,7 +115,9 @@
       </table>
     </div>
 
-    <!-- Modal for Authentication -->
+    <!-- ══════════════════════════════════════════════════
+         Modal: Autentikasi
+    ══════════════════════════════════════════════════ -->
     <div
       class="modal fade"
       id="authModal"
@@ -125,7 +137,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form id="authForm">
+            <form id="authForm" autocomplete="off">
               <div class="mb-3">
                 <label for="password" class="form-label">Enter Password</label>
                 <input
@@ -155,22 +167,122 @@
         </div>
       </div>
     </div>
-    <script>
-      /*
-       * Editor client script for DB table wisuda
-       * Created by http://editor.datatables.net/generator
-       */
 
+    <!-- ══════════════════════════════════════════════════
+         Modal: Tambah / Edit baris
+    ══════════════════════════════════════════════════ -->
+    <div
+      class="modal fade"
+      id="crudModal"
+      tabindex="-1"
+      aria-labelledby="crudModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="crudModalLabel">Tambah Data</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="alert alert-danger d-none" id="crudError"></div>
+            <form id="crudForm" autocomplete="off">
+              <input type="hidden" id="row-id" />
+              <div class="mb-3">
+                <label for="f-seksi" class="form-label">Seksi</label>
+                <input type="text" class="form-control" id="f-seksi" placeholder="Seksi" />
+              </div>
+              <div class="mb-3">
+                <label for="f-job" class="form-label">Job</label>
+                <input type="text" class="form-control" id="f-job" placeholder="Job" />
+              </div>
+              <div class="mb-3">
+                <label for="f-pic" class="form-label">PIC</label>
+                <input type="text" class="form-control" id="f-pic" placeholder="PIC" />
+              </div>
+              <div class="mb-3">
+                <label for="f-persentase" class="form-label">Progress (%)</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="f-persentase"
+                  placeholder="0 – 100"
+                  min="0"
+                  max="100"
+                  step="0.01"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="f-ket" class="form-label">Keterangan</label>
+                <textarea class="form-control" id="f-ket" rows="3" placeholder="Keterangan..."></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" id="crudSave" class="btn btn-primary">Simpan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════
+         Modal: Konfirmasi Hapus
+    ══════════════════════════════════════════════════ -->
+    <div
+      class="modal fade"
+      id="deleteModal"
+      tabindex="-1"
+      aria-labelledby="deleteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+              style="filter:invert(1)"
+            ></button>
+          </div>
+          <div class="modal-body">
+            Yakin ingin menghapus baris ini?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+            <button type="button" id="confirmDelete" class="btn btn-danger">Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
       document.addEventListener("DOMContentLoaded", function () {
-        showAuthModal();
+        /* ─────────────────────────────────────────────
+           Variabel global
+        ───────────────────────────────────────────── */
         let table;
-        let editor;
+        let selectedRowData = null;   // data baris yang sedang dipilih
+        let isAdmin = false;          // status login
+
+        const CRUD_URL = "php/crud.php";
+
+        /* ─────────────────────────────────────────────
+           Helper: fetch average
+        ───────────────────────────────────────────── */
         function fetchAverage() {
           $.ajax({
-            url: "php/avg.php", // PHP file to calculate the average
+            url: "php/avg.php",
             method: "GET",
             success: function (response) {
-              // Assuming the response is the calculated average
               $("#percentage").html(parseFloat(response).toFixed(2) + "%");
             },
             error: function () {
@@ -179,35 +291,10 @@
           });
         }
 
-        function initializeTable(withButtons) {
-          editor = new DataTable.Editor({
-            ajax: "php/table.wisuda.php",
-            table: "#wisuda",
-            fields: [
-              {
-                label: "Seksi:",
-                name: "seksi",
-              },
-              {
-                label: "Job:",
-                name: "job",
-              },
-              {
-                label: "PIC:",
-                name: "pic",
-              },
-              {
-                label: "Progress(%):",
-                name: "persentase",
-              },
-              {
-                label: "Keterangan:",
-                name: "ket",
-                type: "textarea"
-              },
-            ],
-          });
-
+        /* ─────────────────────────────────────────────
+           Inisialisasi DataTable
+        ───────────────────────────────────────────── */
+        function initTable() {
           let buttonsConfig = [
             {
               extend: "collection",
@@ -216,102 +303,212 @@
             },
           ];
 
-          if (withButtons) {
-            buttonsConfig.unshift(
-              { extend: "create", editor: editor },
-              { extend: "edit", editor: editor },
-              { extend: "remove", editor: editor }
-            );
-          }
-
           table = new DataTable("#wisuda", {
-            ajax: "php/table.wisuda.php",
+            ajax: {
+              url: CRUD_URL + "?action=read",
+              type: "GET",
+            },
             columns: [
-              {
-                data: "seksi",
-                width : "15%"
-              },
-              {
-                data: "job",
-                width : "20%"
-              },
-              {
-                data: "pic",
-                width : "15%"
-              },
-              {
-                data: "persentase",
-                type: "number",
-                width : "10%"
-              },
-              {
-                data: "ket",
-                type: "textarea",
-                width : "40%"
-              },
+              { data: "seksi",      width: "15%" },
+              { data: "job",        width: "20%" },
+              { data: "pic",        width: "15%" },
+              { data: "persentase", width: "10%", type: "number" },
+              { data: "ket",        width: "40%" },
             ],
             layout: {
-              top: { searchPanes: {
+              top: {
+                searchPanes: {
                   show: true,
                   initCollapsed: true,
-                  columns: [0,2],
+                  columns: [0, 2],
                   cascadePanes: true,
-                    viewTotal: true
-                }},
-              topStart: {
-                buttons: buttonsConfig,
+                  viewTotal: true,
+                },
               },
+              topStart: { buttons: buttonsConfig },
             },
             order: [[0, "asc"]],
             select: true,
             responsive: true,
           });
 
-          editor.on("submitComplete", function () {
+          /* Pantau baris yang dipilih */
+          table.on("select deselect", function () {
+            const selected = table.rows({ selected: true }).count();
+            if (isAdmin) {
+              $("#btn-edit").prop("disabled", selected !== 1);
+              $("#btn-delete").prop("disabled", selected !== 1);
+            }
+            if (selected === 1) {
+              selectedRowData = table.rows({ selected: true }).data()[0];
+            } else {
+              selectedRowData = null;
+            }
+          });
+
+          table.on("init", function () {
             fetchAverage();
           });
         }
 
-        function showAuthModal(action, editor) {
-          // Clear any previous password or error messages
+        /* ─────────────────────────────────────────────
+           CRUD helpers
+        ───────────────────────────────────────────── */
+        function clearCrudForm() {
+          $("#row-id").val("");
+          $("#f-seksi").val("");
+          $("#f-job").val("");
+          $("#f-pic").val("");
+          $("#f-persentase").val("");
+          $("#f-ket").val("");
+          $("#crudError").addClass("d-none").text("");
+        }
+
+        function crudPost(data, callback) {
+          $.ajax({
+            url: CRUD_URL,
+            method: "POST",
+            data: data,
+            dataType: "json",
+            success: function (res) {
+              if (res.error) {
+                callback(res.error, null);
+              } else {
+                callback(null, res);
+              }
+            },
+            error: function (xhr) {
+              callback("Server error: " + xhr.statusText, null);
+            },
+          });
+        }
+
+        /* ─────────────────────────────────────────────
+           Tombol Tambah
+        ───────────────────────────────────────────── */
+        $("#btn-add").on("click", function () {
+          clearCrudForm();
+          $("#crudModalLabel").text("Tambah Data");
+          new bootstrap.Modal(document.getElementById("crudModal")).show();
+        });
+
+        /* ─────────────────────────────────────────────
+           Tombol Edit
+        ───────────────────────────────────────────── */
+        $("#btn-edit").on("click", function () {
+          if (!selectedRowData) return;
+          clearCrudForm();
+          $("#crudModalLabel").text("Edit Data");
+          $("#row-id").val(selectedRowData.id);
+          $("#f-seksi").val(selectedRowData.seksi);
+          $("#f-job").val(selectedRowData.job);
+          $("#f-pic").val(selectedRowData.pic);
+          $("#f-persentase").val(selectedRowData.persentase);
+          $("#f-ket").val(selectedRowData.ket);
+          new bootstrap.Modal(document.getElementById("crudModal")).show();
+        });
+
+        /* ─────────────────────────────────────────────
+           Tombol Hapus
+        ───────────────────────────────────────────── */
+        $("#btn-delete").on("click", function () {
+          if (!selectedRowData) return;
+          new bootstrap.Modal(document.getElementById("deleteModal")).show();
+        });
+
+        $("#confirmDelete").on("click", function () {
+          if (!selectedRowData) return;
+          crudPost({ action: "delete", id: selectedRowData.id }, function (err) {
+            if (err) {
+              alert("Gagal menghapus: " + err);
+              return;
+            }
+            bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
+            table.ajax.reload(null, false);
+            fetchAverage();
+            selectedRowData = null;
+            if (isAdmin) {
+              $("#btn-edit").prop("disabled", true);
+              $("#btn-delete").prop("disabled", true);
+            }
+          });
+        });
+
+        /* ─────────────────────────────────────────────
+           Simpan (Tambah / Edit)
+        ───────────────────────────────────────────── */
+        $("#crudSave").on("click", function () {
+          const id = $("#row-id").val();
+          const action = id ? "edit" : "create";
+
+          const payload = {
+            action: action,
+            id: id,
+            seksi: $("#f-seksi").val(),
+            job: $("#f-job").val(),
+            pic: $("#f-pic").val(),
+            persentase: $("#f-persentase").val(),
+            ket: $("#f-ket").val(),
+          };
+
+          crudPost(payload, function (err) {
+            if (err) {
+              $("#crudError").removeClass("d-none").text(err);
+              return;
+            }
+            bootstrap.Modal.getInstance(document.getElementById("crudModal")).hide();
+            table.ajax.reload(null, false);
+            fetchAverage();
+          });
+        });
+
+        /* ─────────────────────────────────────────────
+           Autentikasi
+        ───────────────────────────────────────────── */
+        function showAuthModal() {
           $("#password").val("");
           $("#authError").addClass("d-none");
 
-          // Show the modal
-          let authModal = new bootstrap.Modal(
-            document.getElementById("authModal")
-          );
+          let authModal = new bootstrap.Modal(document.getElementById("authModal"));
           authModal.show();
 
-          // Handle the authentication process
           $("#authSubmit")
             .off("click")
             .on("click", function () {
               let password = $("#password").val();
 
-              // Mock password authentication
               if (password === "admin123") {
-                authModal.hide(); // Close the modal if authentication is successful
-                initializeTable(true);
+                authModal.hide();
+                isAdmin = true;
+                // Tampilkan tombol CRUD
+                $("#crud-buttons").show();
+                // Inisialisasi tabel jika belum
+                if (!table) {
+                  initTable();
+                } else {
+                  // Reset state tombol
+                  $("#btn-edit").prop("disabled", true);
+                  $("#btn-delete").prop("disabled", true);
+                }
               } else {
-                // Show error message if password is incorrect
                 $("#authError").removeClass("d-none");
-                initializeTable(false);
+                // Inisialisasi tabel read-only jika belum ada
+                if (!table) {
+                  initTable();
+                }
               }
             });
 
           $("#authModal").on("hidden.bs.modal", function () {
             if (!table) {
-              initializeTable(false); // Initialize the table without buttons if modal is closed without valid authentication
+              initTable();
             }
             fetchAverage();
-
-            // Call the function initially when the table is loaded
-            table.on("init", function () {
-              fetchAverage();
-            });
           });
         }
+
+        // Mulai dengan auth modal
+        showAuthModal();
       });
     </script>
   </body>

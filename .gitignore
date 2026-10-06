@@ -1,0 +1,37 @@
+# ── Konfigurasi database (JANGAN DI-COMMIT!) ──────────────────────────────
+php/config.php
+php/lib/config.php
+
+# ── DataTables Editor (file berbayar / trial) ────────────────────────────
+js/dataTables.editor.min.js
+js/dataTables.editor.min.js.old
+js/editor.bootstrap5.min.js
+js/editor.bootstrap4.min.js
+js/editor.bootstrap.min.js
+js/editor.bulma.min.js
+js/editor.foundation.min.js
+js/editor.jqueryui.min.js
+js/editor.semanticui.min.js
+js/editor.dataTables.min.js
+css/editor.bootstrap5.min.css
+css/editor.bootstrap4.min.css
+css/editor.bootstrap.min.css
+css/editor.bulma.min.css
+css/editor.foundation.min.css
+css/editor.jqueryui.min.css
+css/editor.semanticui.min.css
+css/editor.dataTables.min.css
+php/lib/
+
+# ── File sementara / build ───────────────────────────────────────────────
+*.zip
+*.bak
+*.old
+*.log
+a.txt
+
+# ── OS / IDE ─────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
