@@ -1,515 +1,857 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Progress Wisuda — Politeknik GT</title>
 
-    <title>Wisuda</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 
     <!-- Bootstrap 5 -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"
-    />
-    <!-- DataTables + Bootstrap 5 + extensions -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/v/bs5/jqc-1.12.4/moment-2.29.4/dt-2.1.8/b-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.4/r-3.0.3/sl-2.1.0/datatables.min.css"
-    />
-    <link rel="stylesheet" type="text/css" href="css/generator-base.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="https://cdn.datatables.net/searchpanes/2.3.2/css/searchPanes.dataTables.css"
-    />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" />
 
-    <!-- DataTables JS -->
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="https://cdn.datatables.net/v/bs5/jqc-1.12.4/moment-2.29.4/dt-2.1.8/b-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.4/r-3.0.3/sl-2.1.0/datatables.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"
-    ></script>
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.dataTables.js"
-    ></script>
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="https://cdn.datatables.net/searchpanes/2.3.2/js/dataTables.searchPanes.js"
-    ></script>
-    <script
-      type="text/javascript"
-      charset="utf-8"
-      src="https://cdn.datatables.net/searchpanes/2.3.2/js/searchPanes.dataTables.js"
-    ></script>
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs5/jqc-1.12.4/moment-2.29.4/dt-2.1.8/b-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.4/r-3.0.3/sl-2.1.0/datatables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.3/css/responsive.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/searchpanes/2.3.2/css/searchPanes.dataTables.css" />
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
     <style>
-      .btn-action { margin-right: 3px; }
-      .modal-header { background-color: #0d6efd; color: #fff; }
-      .modal-header .btn-close { filter: invert(1); }
+      /* ═══════════════════════════════════════════════
+         BASE & VARIABLES
+      ═══════════════════════════════════════════════ */
+      :root {
+        --bg-dark:       #0f1117;
+        --bg-card:       #1a1d27;
+        --bg-card2:      #21253a;
+        --accent:        #6366f1;
+        --accent-2:      #8b5cf6;
+        --accent-3:      #06b6d4;
+        --success:       #10b981;
+        --warning:       #f59e0b;
+        --danger:        #ef4444;
+        --text-primary:  #f1f5f9;
+        --text-muted:    #94a3b8;
+        --border:        rgba(255,255,255,.08);
+        --radius:        16px;
+        --shadow:        0 8px 32px rgba(0,0,0,.4);
+      }
+
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+
+      body {
+        font-family: 'Inter', sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-primary);
+        min-height: 100vh;
+      }
+
+      /* ═══════════════════════════════════════════════
+         TOPBAR / NAVBAR
+      ═══════════════════════════════════════════════ */
+      .topbar {
+        background: linear-gradient(135deg, #1e1b4b 0%, #312e81 40%, #1e1b4b 100%);
+        border-bottom: 1px solid var(--border);
+        padding: 18px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+      }
+      .topbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .topbar-icon {
+        width: 44px; height: 44px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px;
+        box-shadow: 0 4px 16px rgba(99,102,241,.4);
+      }
+      .topbar-title { font-size: 1.25rem; font-weight: 700; letter-spacing: -.3px; }
+      .topbar-sub   { font-size: .75rem; color: var(--text-muted); margin-top: 1px; }
+      .topbar-badge {
+        background: linear-gradient(135deg, var(--success), #059669);
+        color: #fff;
+        font-size: .85rem;
+        font-weight: 700;
+        padding: 6px 18px;
+        border-radius: 40px;
+        box-shadow: 0 4px 16px rgba(16,185,129,.35);
+        transition: transform .2s;
+      }
+      .topbar-badge:hover { transform: scale(1.05); }
+
+      /* ═══════════════════════════════════════════════
+         PAGE WRAPPER
+      ═══════════════════════════════════════════════ */
+      .page-wrap { max-width: 1400px; margin: 0 auto; padding: 32px 24px; }
+
+      /* ═══════════════════════════════════════════════
+         STAT CARDS (row 1)
+      ═══════════════════════════════════════════════ */
+      .stat-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 22px 24px;
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        transition: transform .25s, box-shadow .25s;
+        height: 100%;
+      }
+      .stat-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+      .stat-icon {
+        width: 52px; height: 52px; border-radius: 14px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 24px; flex-shrink: 0;
+      }
+      .stat-icon.indigo  { background: rgba(99,102,241,.18); }
+      .stat-icon.cyan    { background: rgba(6,182,212,.18);  }
+      .stat-icon.emerald { background: rgba(16,185,129,.18); }
+      .stat-icon.amber   { background: rgba(245,158,11,.18); }
+      .stat-val   { font-size: 1.7rem; font-weight: 800; line-height: 1; }
+      .stat-label { font-size: .78rem; color: var(--text-muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
+
+      /* ═══════════════════════════════════════════════
+         OVERALL PROGRESS BAR
+      ═══════════════════════════════════════════════ */
+      .overall-wrap {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px 28px;
+        margin-bottom: 28px;
+      }
+      .overall-label { font-size: .78rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+      .progress-track {
+        background: rgba(255,255,255,.07);
+        border-radius: 100px;
+        height: 14px;
+        overflow: hidden;
+      }
+      .progress-fill {
+        height: 100%;
+        border-radius: 100px;
+        background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+        background-size: 200% 100%;
+        animation: shimmer 2.5s linear infinite;
+        transition: width 1s cubic-bezier(.4,0,.2,1);
+      }
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      /* ═══════════════════════════════════════════════
+         SECTION TITLE
+      ═══════════════════════════════════════════════ */
+      .section-title {
+        font-size: 1rem; font-weight: 700; color: var(--text-primary);
+        margin-bottom: 18px;
+        display: flex; align-items: center; gap: 8px;
+      }
+      .section-title::before {
+        content: '';
+        width: 4px; height: 18px;
+        background: linear-gradient(180deg, var(--accent), var(--accent-2));
+        border-radius: 4px;
+      }
+
+      /* ═══════════════════════════════════════════════
+         CHART SECTION
+      ═══════════════════════════════════════════════ */
+      .chart-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        height: 100%;
+        transition: transform .25s, box-shadow .25s;
+      }
+      .chart-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+      .chart-card-title {
+        font-size: .85rem; font-weight: 600; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: .6px; margin-bottom: 18px;
+      }
+
+      /* Legend per seksi */
+      .seksi-legend { display: flex; flex-direction: column; gap: 10px; }
+      .seksi-legend-item { display: flex; align-items: center; gap: 10px; }
+      .seksi-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+      .seksi-name { font-size: .82rem; color: var(--text-primary); flex: 1; }
+      .seksi-pct  { font-size: .82rem; font-weight: 700; color: var(--text-muted); }
+      .seksi-bar-wrap {
+        background: rgba(255,255,255,.06);
+        border-radius: 100px; height: 5px; margin-top: 4px; width: 100%; overflow: hidden;
+      }
+      .seksi-bar-fill { height: 100%; border-radius: 100px; }
+
+      /* ═══════════════════════════════════════════════
+         TABLE SECTION
+      ═══════════════════════════════════════════════ */
+      .table-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        margin-top: 28px;
+      }
+      .crud-toolbar {
+        display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+        margin-bottom: 16px;
+      }
       #crud-buttons { display: none; }
+
+      /* DataTables dark theme override */
+      .dataTables_wrapper,
+      .dataTables_wrapper .dataTables_length,
+      .dataTables_wrapper .dataTables_filter,
+      .dataTables_wrapper .dataTables_info,
+      .dataTables_wrapper .dataTables_paginate { color: var(--text-primary) !important; }
+
+      .dataTables_wrapper input,
+      .dataTables_wrapper select {
+        background: var(--bg-card2) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 4px 10px !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button {
+        color: var(--text-primary) !important;
+        border-radius: 8px !important;
+        border: none !important;
+      }
+      .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+      .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: var(--accent) !important;
+        color: #fff !important;
+        border: none !important;
+      }
+
+      table.dataTable thead th {
+        background: var(--bg-card2) !important;
+        color: var(--text-muted) !important;
+        font-size: .75rem !important;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        border-bottom: 1px solid var(--border) !important;
+        padding: 12px 14px !important;
+      }
+      table.dataTable tbody td {
+        background: transparent !important;
+        color: var(--text-primary) !important;
+        border-bottom: 1px solid var(--border) !important;
+        padding: 11px 14px !important;
+        font-size: .87rem;
+        vertical-align: middle;
+      }
+      table.dataTable tbody tr:hover td { background: rgba(99,102,241,.08) !important; }
+      table.dataTable tbody tr.selected td { background: rgba(99,102,241,.18) !important; }
+
+      /* Progress badge inside table */
+      .pct-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 600;
+        font-size: .82rem;
+        padding: 3px 10px;
+        border-radius: 40px;
+      }
+      .pct-badge.done    { background: rgba(16,185,129,.18); color: #34d399; }
+      .pct-badge.high    { background: rgba(6,182,212,.18);  color: #22d3ee; }
+      .pct-badge.mid     { background: rgba(245,158,11,.18); color: #fbbf24; }
+      .pct-badge.low     { background: rgba(239,68,68,.18);  color: #f87171; }
+
+      /* Buttons */
+      .btn-glow-green {
+        background: linear-gradient(135deg, #059669, var(--success));
+        color: #fff; border: none; border-radius: 10px;
+        padding: 7px 16px; font-size: .82rem; font-weight: 600;
+        transition: all .2s; box-shadow: 0 4px 14px rgba(16,185,129,.3);
+      }
+      .btn-glow-green:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(16,185,129,.45); color: #fff; }
+
+      .btn-glow-indigo {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: #fff; border: none; border-radius: 10px;
+        padding: 7px 16px; font-size: .82rem; font-weight: 600;
+        transition: all .2s; box-shadow: 0 4px 14px rgba(99,102,241,.3);
+      }
+      .btn-glow-indigo:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(99,102,241,.45); color: #fff; }
+      .btn-glow-indigo:disabled { opacity: .4; transform: none; cursor: not-allowed; }
+
+      .btn-glow-red {
+        background: linear-gradient(135deg, #dc2626, var(--danger));
+        color: #fff; border: none; border-radius: 10px;
+        padding: 7px 16px; font-size: .82rem; font-weight: 600;
+        transition: all .2s; box-shadow: 0 4px 14px rgba(239,68,68,.3);
+      }
+      .btn-glow-red:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(239,68,68,.45); color: #fff; }
+      .btn-glow-red:disabled { opacity: .4; transform: none; cursor: not-allowed; }
+
+      /* ═══════════════════════════════════════════════
+         MODALS
+      ═══════════════════════════════════════════════ */
+      .modal-content {
+        background: var(--bg-card) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: var(--radius) !important;
+        color: var(--text-primary) !important;
+      }
+      .modal-header {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+        border-bottom: none !important;
+        border-radius: calc(var(--radius) - 1px) calc(var(--radius) - 1px) 0 0 !important;
+        padding: 18px 24px !important;
+      }
+      .modal-header-danger {
+        background: linear-gradient(135deg, #dc2626, var(--danger)) !important;
+      }
+      .modal-header .modal-title { font-weight: 700; font-size: 1rem; }
+      .modal-header .btn-close   { filter: invert(1); }
+      .modal-body   { padding: 24px !important; }
+      .modal-footer { border-top: 1px solid var(--border) !important; padding: 16px 24px !important; }
+
+      .form-label { color: var(--text-muted); font-size: .8rem; font-weight: 500; margin-bottom: 6px; letter-spacing: .3px; }
+      .form-control, .form-select {
+        background: var(--bg-card2) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 10px !important;
+        font-size: .87rem !important;
+      }
+      .form-control:focus, .form-select:focus {
+        border-color: var(--accent) !important;
+        box-shadow: 0 0 0 3px rgba(99,102,241,.25) !important;
+      }
+      textarea.form-control { resize: vertical; min-height: 80px; }
+
+      /* DT Buttons dark override */
+      .dt-button {
+        background: var(--bg-card2) !important;
+        color: var(--text-primary) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 8px !important;
+        font-size: .8rem !important;
+      }
+      .dt-button:hover { background: var(--accent) !important; border-color: var(--accent) !important; }
+
+      /* SearchPanes */
+      .dtsp-searchPane  { background: var(--bg-card2) !important; border-radius: 10px !important; }
+      .dtsp-panesContainer { background: transparent !important; }
+
+      /* Scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: var(--bg-dark); }
+      ::-webkit-scrollbar-thumb { background: rgba(99,102,241,.4); border-radius: 3px; }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .topbar { padding: 14px 16px; }
+        .page-wrap { padding: 20px 14px; }
+      }
+
+      /* Animations */
+      .fade-in { animation: fadeIn .5s ease both; }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+      .fade-in:nth-child(1) { animation-delay: .05s; }
+      .fade-in:nth-child(2) { animation-delay: .10s; }
+      .fade-in:nth-child(3) { animation-delay: .15s; }
+      .fade-in:nth-child(4) { animation-delay: .20s; }
     </style>
   </head>
-  <body class="bootstrap5 bg-light">
-    <div class="container pt-4">
-      <div class="row justify-content-between">
-        <h1 class="col-sm-12 col-md-6 text-sm-center text-md-start">Wisuda</h1>
-        <h2 class="col-sm-12 col-md-6 text-sm-center text-md-end">
-          Overall Progress :
-          <span
-            class="bg-success p-2 rounded text-white fw-bold"
-            id="percentage"
-            >XXX%</span
-          >
-        </h2>
+
+  <body>
+    <!-- ══ TOPBAR ══════════════════════════════════════════════ -->
+    <nav class="topbar">
+      <div class="topbar-brand">
+        <div class="topbar-icon">🎓</div>
+        <div>
+          <div class="topbar-title">Progress Wisuda</div>
+          <div class="topbar-sub">Politeknik Gajah Tunggal</div>
+        </div>
+      </div>
+      <div class="topbar-badge" id="percentage">— %</div>
+    </nav>
+
+    <div class="page-wrap">
+
+      <!-- ══ STAT CARDS ════════════════════════════════════════ -->
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3 fade-in">
+          <div class="stat-card">
+            <div class="stat-icon indigo">📊</div>
+            <div>
+              <div class="stat-val" id="stat-overall">—</div>
+              <div class="stat-label">Overall Progress</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 fade-in">
+          <div class="stat-card">
+            <div class="stat-icon cyan">📋</div>
+            <div>
+              <div class="stat-val" id="stat-total">—</div>
+              <div class="stat-label">Total Job</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 fade-in">
+          <div class="stat-card">
+            <div class="stat-icon emerald">✅</div>
+            <div>
+              <div class="stat-val" id="stat-done">—</div>
+              <div class="stat-label">Job Selesai</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 fade-in">
+          <div class="stat-card">
+            <div class="stat-icon amber">⏳</div>
+            <div>
+              <div class="stat-val" id="stat-seksi">—</div>
+              <div class="stat-label">Jumlah Seksi</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Tombol CRUD (hanya muncul kalau sudah login) -->
-      <div id="crud-buttons" class="mb-2">
-        <button id="btn-add" class="btn btn-success btn-sm btn-action">
-          ➕ Tambah
-        </button>
-        <button id="btn-edit" class="btn btn-primary btn-sm btn-action" disabled>
-          ✏️ Edit
-        </button>
-        <button id="btn-delete" class="btn btn-danger btn-sm btn-action" disabled>
-          🗑️ Hapus
-        </button>
+      <!-- ══ OVERALL PROGRESS BAR ══════════════════════════════ -->
+      <div class="overall-wrap mb-4 fade-in">
+        <div class="d-flex justify-content-between mb-2">
+          <span class="overall-label">Overall Progress</span>
+          <span id="overall-pct-label" style="font-weight:700;font-size:.9rem;">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="overall-bar" style="width:0%"></div>
+        </div>
       </div>
 
-      <table
-        cellpadding="0"
-        cellspacing="0"
-        border="0"
-        class="table table-striped table-bordered"
-        id="wisuda"
-        width="100%"
-      >
-        <thead>
-          <tr>
-            <th>Seksi</th>
-            <th>Job</th>
-            <th>PIC</th>
-            <th>Progress (%)</th>
-            <th>Keterangan</th>
-          </tr>
-        </thead>
-      </table>
-    </div>
+      <!-- ══ CHARTS ═════════════════════════════════════════════ -->
+      <div class="section-title">Grafik Progress per Seksi</div>
+      <div class="row g-3 mb-2">
+        <!-- Pie Chart -->
+        <div class="col-12 col-lg-5 fade-in">
+          <div class="chart-card">
+            <div class="chart-card-title">🥧 Distribusi Progress per Seksi</div>
+            <div style="position:relative;max-height:340px;display:flex;justify-content:center;">
+              <canvas id="pieChart"></canvas>
+            </div>
+          </div>
+        </div>
+        <!-- Per-seksi legend + mini bars -->
+        <div class="col-12 col-lg-7 fade-in">
+          <div class="chart-card">
+            <div class="chart-card-title">📈 Rata-rata Progress per Seksi</div>
+            <div id="seksi-legend" class="seksi-legend"></div>
+          </div>
+        </div>
+      </div>
 
-    <!-- ══════════════════════════════════════════════════
-         Modal: Autentikasi
-    ══════════════════════════════════════════════════ -->
-    <div
-      class="modal fade"
-      id="authModal"
-      tabindex="-1"
-      aria-labelledby="authModalLabel"
-      aria-hidden="true"
-    >
+      <!-- ══ TABLE ══════════════════════════════════════════════ -->
+      <div class="table-card fade-in mt-4">
+        <div class="section-title mb-3">Detail Job</div>
+
+        <!-- Toolbar CRUD (admin only) -->
+        <div class="crud-toolbar" id="crud-buttons">
+          <button id="btn-add" class="btn-glow-green">➕ Tambah</button>
+          <button id="btn-edit" class="btn-glow-indigo" disabled>✏️ Edit</button>
+          <button id="btn-delete" class="btn-glow-red" disabled>🗑️ Hapus</button>
+        </div>
+
+        <table
+          cellpadding="0" cellspacing="0" border="0"
+          class="table table-bordered"
+          id="wisuda" width="100%"
+        >
+          <thead>
+            <tr>
+              <th>Seksi</th>
+              <th>Job</th>
+              <th>PIC</th>
+              <th>Progress (%)</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+    </div><!-- /page-wrap -->
+
+
+    <!-- ══════════ MODAL AUTH ══════════════════════════════════ -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="authModalLabel">Masukkan Password</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <h5 class="modal-title">🔐 Masukkan Password</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
             <form id="authForm" autocomplete="off">
               <div class="mb-3">
-                <label for="password" class="form-label">Enter Password</label>
-                <input
-                  type="password"
-                  class="form-control"
-                  id="password"
-                  placeholder="Enter password"
-                />
+                <label for="password" class="form-label">Password Admin</label>
+                <input type="password" class="form-control" id="password" placeholder="Masukkan password…" />
               </div>
             </form>
-            <div class="alert alert-danger d-none" id="authError">
-              Invalid password, try again!
-            </div>
+            <div class="alert alert-danger d-none" id="authError">Password salah, coba lagi!</div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-bs-dismiss="modal"
-            >
-              Lihat Data
-            </button>
-            <button type="button" id="authSubmit" class="btn btn-primary">
-              Submit Password
-            </button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Lihat Data Saja</button>
+            <button type="button" id="authSubmit" class="btn-glow-indigo px-4">Login</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════
-         Modal: Tambah / Edit baris
-    ══════════════════════════════════════════════════ -->
-    <div
-      class="modal fade"
-      id="crudModal"
-      tabindex="-1"
-      aria-labelledby="crudModalLabel"
-      aria-hidden="true"
-    >
+    <!-- ══════════ MODAL CRUD ═══════════════════════════════════ -->
+    <div class="modal fade" id="crudModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="crudModalLabel">Tambah Data</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
           </div>
           <div class="modal-body">
             <div class="alert alert-danger d-none" id="crudError"></div>
             <form id="crudForm" autocomplete="off">
               <input type="hidden" id="row-id" />
               <div class="mb-3">
-                <label for="f-seksi" class="form-label">Seksi</label>
-                <input type="text" class="form-control" id="f-seksi" placeholder="Seksi" />
+                <label class="form-label">Seksi</label>
+                <input type="text" class="form-control" id="f-seksi" placeholder="Nama Seksi" />
               </div>
               <div class="mb-3">
-                <label for="f-job" class="form-label">Job</label>
-                <input type="text" class="form-control" id="f-job" placeholder="Job" />
+                <label class="form-label">Job</label>
+                <input type="text" class="form-control" id="f-job" placeholder="Nama Job / Tugas" />
               </div>
               <div class="mb-3">
-                <label for="f-pic" class="form-label">PIC</label>
-                <input type="text" class="form-control" id="f-pic" placeholder="PIC" />
+                <label class="form-label">PIC</label>
+                <input type="text" class="form-control" id="f-pic" placeholder="Nama PIC" />
               </div>
               <div class="mb-3">
-                <label for="f-persentase" class="form-label">Progress (%)</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  id="f-persentase"
-                  placeholder="0 – 100"
-                  min="0"
-                  max="100"
-                  step="0.01"
-                />
+                <label class="form-label">Progress (%)</label>
+                <input type="number" class="form-control" id="f-persentase" placeholder="0 – 100" min="0" max="100" step="0.01" />
               </div>
               <div class="mb-3">
-                <label for="f-ket" class="form-label">Keterangan</label>
-                <textarea class="form-control" id="f-ket" rows="3" placeholder="Keterangan..."></textarea>
+                <label class="form-label">Keterangan</label>
+                <textarea class="form-control" id="f-ket" rows="3" placeholder="Keterangan tambahan…"></textarea>
               </div>
             </form>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="button" id="crudSave" class="btn btn-primary">Simpan</button>
+            <button type="button" id="crudSave" class="btn-glow-green px-4">💾 Simpan</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ══════════════════════════════════════════════════
-         Modal: Konfirmasi Hapus
-    ══════════════════════════════════════════════════ -->
-    <div
-      class="modal fade"
-      id="deleteModal"
-      tabindex="-1"
-      aria-labelledby="deleteModalLabel"
-      aria-hidden="true"
-    >
+    <!-- ══════════ MODAL DELETE ════════════════════════════════ -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
-          <div class="modal-header bg-danger text-white">
-            <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              style="filter:invert(1)"
-            ></button>
+          <div class="modal-header modal-header-danger">
+            <h5 class="modal-title">🗑️ Konfirmasi Hapus</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" style="filter:invert(1)"></button>
           </div>
-          <div class="modal-body">
-            Yakin ingin menghapus baris ini?
+          <div class="modal-body" style="text-align:center;padding:28px!important;">
+            <div style="font-size:2.5rem;margin-bottom:12px;">⚠️</div>
+            <p style="color:var(--text-muted);font-size:.9rem;">Yakin ingin menghapus baris ini?<br/>Tindakan ini tidak dapat dibatalkan.</p>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer justify-content-center">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-            <button type="button" id="confirmDelete" class="btn btn-danger">Hapus</button>
+            <button type="button" id="confirmDelete" class="btn-glow-red px-4">Ya, Hapus</button>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- ══ SCRIPTS ════════════════════════════════════════════ -->
+    <script src="https://cdn.datatables.net/v/bs5/jqc-1.12.4/moment-2.29.4/dt-2.1.8/b-3.1.2/b-html5-3.1.2/b-print-3.1.2/date-1.5.4/r-3.0.3/sl-2.1.0/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/dataTables.responsive.js"></script>
+    <script src="https://cdn.datatables.net/responsive/3.0.3/js/responsive.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.2/js/dataTables.searchPanes.js"></script>
+    <script src="https://cdn.datatables.net/searchpanes/2.3.2/js/searchPanes.dataTables.js"></script>
+
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        /* ─────────────────────────────────────────────
-           Variabel global
-        ───────────────────────────────────────────── */
-        let table;
-        let selectedRowData = null;   // data baris yang sedang dipilih
-        let isAdmin = false;          // status login
+    document.addEventListener("DOMContentLoaded", function () {
 
-        const CRUD_URL = "php/crud.php";
+      /* ── PALETTE ───────────────────────────────────────── */
+      const PALETTE = [
+        '#6366f1','#8b5cf6','#06b6d4','#10b981','#f59e0b',
+        '#ef4444','#ec4899','#14b8a6','#f97316','#84cc16',
+        '#a855f7','#3b82f6','#e11d48','#0ea5e9','#22c55e'
+      ];
 
-        /* ─────────────────────────────────────────────
-           Helper: fetch average
-        ───────────────────────────────────────────── */
-        function fetchAverage() {
-          $.ajax({
-            url: "php/avg.php",
-            method: "GET",
-            success: function (response) {
-              $("#percentage").html(parseFloat(response).toFixed(2) + "%");
-            },
-            error: function () {
-              console.log("Error fetching average from the server");
-            },
-          });
-        }
+      /* ── STATE ─────────────────────────────────────────── */
+      let table, pieChart;
+      let selectedRowData = null;
+      let isAdmin = false;
+      const CRUD_URL  = "php/crud.php";
+      const CHART_URL = "php/chart.php";
 
-        /* ─────────────────────────────────────────────
-           Inisialisasi DataTable
-        ───────────────────────────────────────────── */
-        function initTable() {
-          let buttonsConfig = [
-            {
-              extend: "collection",
-              text: "Export",
-              buttons: ["copy", "excel", "csv", "pdf", "print"],
-            },
-          ];
+      /* ── BADGE helper ──────────────────────────────────── */
+      function pctBadge(val) {
+        const n = parseFloat(val) || 0;
+        let cls = n >= 100 ? 'done' : n >= 70 ? 'high' : n >= 40 ? 'mid' : 'low';
+        let icon = n >= 100 ? '✅' : n >= 70 ? '🔵' : n >= 40 ? '🟡' : '🔴';
+        return `<span class="pct-badge ${cls}">${icon} ${n.toFixed(1)}%</span>`;
+      }
 
-          table = new DataTable("#wisuda", {
-            ajax: {
-              url: CRUD_URL + "?action=read",
-              type: "GET",
-            },
-            columns: [
-              { data: "seksi",      width: "15%" },
-              { data: "job",        width: "20%" },
-              { data: "pic",        width: "15%" },
-              { data: "persentase", width: "10%", type: "number" },
-              { data: "ket",        width: "40%" },
-            ],
-            layout: {
-              top: {
-                searchPanes: {
-                  show: true,
-                  initCollapsed: true,
-                  columns: [0, 2],
-                  cascadePanes: true,
-                  viewTotal: true,
-                },
+      /* ── FETCH CHART DATA ──────────────────────────────── */
+      function fetchChartData() {
+        $.ajax({
+          url: CHART_URL,
+          method: "GET",
+          dataType: "json",
+          success: function(data) {
+            if (data.error) return;
+
+            const overall = data.overall || 0;
+            const seksiList = data.per_seksi || [];
+
+            // ── Stat cards
+            const totalJob = seksiList.reduce((s,r) => s + r.total_job, 0);
+            const doneJob  = seksiList.reduce((s,r) => s + r.done_job, 0);
+            $("#stat-overall").text(overall.toFixed(1) + "%");
+            $("#stat-total").text(totalJob);
+            $("#stat-done").text(doneJob);
+            $("#stat-seksi").text(seksiList.length);
+
+            // ── Topbar badge
+            $("#percentage").text(overall.toFixed(2) + "%");
+
+            // ── Overall bar
+            $("#overall-bar").css("width", overall + "%");
+            $("#overall-pct-label").text(overall.toFixed(2) + "%");
+
+            // ── Pie Chart
+            const labels = seksiList.map(r => r.seksi);
+            const values = seksiList.map(r => r.avg_progress);
+            const colors = seksiList.map((_, i) => PALETTE[i % PALETTE.length]);
+
+            if (pieChart) pieChart.destroy();
+            const ctx = document.getElementById("pieChart").getContext("2d");
+            pieChart = new Chart(ctx, {
+              type: "doughnut",
+              data: {
+                labels: labels,
+                datasets: [{
+                  data: values,
+                  backgroundColor: colors.map(c => c + "cc"),
+                  borderColor: colors,
+                  borderWidth: 2,
+                  hoverOffset: 10
+                }]
               },
-              topStart: { buttons: buttonsConfig },
-            },
-            order: [[0, "asc"]],
-            select: true,
-            responsive: true,
-          });
-
-          /* Pantau baris yang dipilih */
-          table.on("select deselect", function () {
-            const selected = table.rows({ selected: true }).count();
-            if (isAdmin) {
-              $("#btn-edit").prop("disabled", selected !== 1);
-              $("#btn-delete").prop("disabled", selected !== 1);
-            }
-            if (selected === 1) {
-              selectedRowData = table.rows({ selected: true }).data()[0];
-            } else {
-              selectedRowData = null;
-            }
-          });
-
-          table.on("init", function () {
-            fetchAverage();
-          });
-        }
-
-        /* ─────────────────────────────────────────────
-           CRUD helpers
-        ───────────────────────────────────────────── */
-        function clearCrudForm() {
-          $("#row-id").val("");
-          $("#f-seksi").val("");
-          $("#f-job").val("");
-          $("#f-pic").val("");
-          $("#f-persentase").val("");
-          $("#f-ket").val("");
-          $("#crudError").addClass("d-none").text("");
-        }
-
-        function crudPost(data, callback) {
-          $.ajax({
-            url: CRUD_URL,
-            method: "POST",
-            data: data,
-            dataType: "json",
-            success: function (res) {
-              if (res.error) {
-                callback(res.error, null);
-              } else {
-                callback(null, res);
-              }
-            },
-            error: function (xhr) {
-              callback("Server error: " + xhr.statusText, null);
-            },
-          });
-        }
-
-        /* ─────────────────────────────────────────────
-           Tombol Tambah
-        ───────────────────────────────────────────── */
-        $("#btn-add").on("click", function () {
-          clearCrudForm();
-          $("#crudModalLabel").text("Tambah Data");
-          new bootstrap.Modal(document.getElementById("crudModal")).show();
-        });
-
-        /* ─────────────────────────────────────────────
-           Tombol Edit
-        ───────────────────────────────────────────── */
-        $("#btn-edit").on("click", function () {
-          if (!selectedRowData) return;
-          clearCrudForm();
-          $("#crudModalLabel").text("Edit Data");
-          $("#row-id").val(selectedRowData.id);
-          $("#f-seksi").val(selectedRowData.seksi);
-          $("#f-job").val(selectedRowData.job);
-          $("#f-pic").val(selectedRowData.pic);
-          $("#f-persentase").val(selectedRowData.persentase);
-          $("#f-ket").val(selectedRowData.ket);
-          new bootstrap.Modal(document.getElementById("crudModal")).show();
-        });
-
-        /* ─────────────────────────────────────────────
-           Tombol Hapus
-        ───────────────────────────────────────────── */
-        $("#btn-delete").on("click", function () {
-          if (!selectedRowData) return;
-          new bootstrap.Modal(document.getElementById("deleteModal")).show();
-        });
-
-        $("#confirmDelete").on("click", function () {
-          if (!selectedRowData) return;
-          crudPost({ action: "delete", id: selectedRowData.id }, function (err) {
-            if (err) {
-              alert("Gagal menghapus: " + err);
-              return;
-            }
-            bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
-            table.ajax.reload(null, false);
-            fetchAverage();
-            selectedRowData = null;
-            if (isAdmin) {
-              $("#btn-edit").prop("disabled", true);
-              $("#btn-delete").prop("disabled", true);
-            }
-          });
-        });
-
-        /* ─────────────────────────────────────────────
-           Simpan (Tambah / Edit)
-        ───────────────────────────────────────────── */
-        $("#crudSave").on("click", function () {
-          const id = $("#row-id").val();
-          const action = id ? "edit" : "create";
-
-          const payload = {
-            action: action,
-            id: id,
-            seksi: $("#f-seksi").val(),
-            job: $("#f-job").val(),
-            pic: $("#f-pic").val(),
-            persentase: $("#f-persentase").val(),
-            ket: $("#f-ket").val(),
-          };
-
-          crudPost(payload, function (err) {
-            if (err) {
-              $("#crudError").removeClass("d-none").text(err);
-              return;
-            }
-            bootstrap.Modal.getInstance(document.getElementById("crudModal")).hide();
-            table.ajax.reload(null, false);
-            fetchAverage();
-          });
-        });
-
-        /* ─────────────────────────────────────────────
-           Autentikasi
-        ───────────────────────────────────────────── */
-        function showAuthModal() {
-          $("#password").val("");
-          $("#authError").addClass("d-none");
-
-          let authModal = new bootstrap.Modal(document.getElementById("authModal"));
-          authModal.show();
-
-          $("#authSubmit")
-            .off("click")
-            .on("click", function () {
-              let password = $("#password").val();
-
-              if (password === "admin123") {
-                authModal.hide();
-                isAdmin = true;
-                // Tampilkan tombol CRUD
-                $("#crud-buttons").show();
-                // Inisialisasi tabel jika belum
-                if (!table) {
-                  initTable();
-                } else {
-                  // Reset state tombol
-                  $("#btn-edit").prop("disabled", true);
-                  $("#btn-delete").prop("disabled", true);
-                }
-              } else {
-                $("#authError").removeClass("d-none");
-                // Inisialisasi tabel read-only jika belum ada
-                if (!table) {
-                  initTable();
-                }
+              options: {
+                cutout: "58%",
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                    callbacks: {
+                      label: ctx => ` ${ctx.label}: ${ctx.parsed.toFixed(1)}%`
+                    },
+                    backgroundColor: "#1a1d27",
+                    titleColor: "#f1f5f9",
+                    bodyColor: "#94a3b8",
+                    borderColor: "rgba(255,255,255,.08)",
+                    borderWidth: 1
+                  }
+                },
+                animation: { animateRotate: true, duration: 900 }
               }
             });
 
-          $("#authModal").on("hidden.bs.modal", function () {
-            if (!table) {
-              initTable();
-            }
-            fetchAverage();
-          });
-        }
+            // ── Seksi legend
+            let html = "";
+            seksiList.forEach((r, i) => {
+              const color = PALETTE[i % PALETTE.length];
+              const pct   = r.avg_progress.toFixed(1);
+              html += `
+                <div class="seksi-legend-item">
+                  <div class="seksi-dot" style="background:${color}"></div>
+                  <div style="flex:1">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+                      <span class="seksi-name">${r.seksi}</span>
+                      <span class="seksi-pct">${pct}%
+                        <span style="font-size:.7rem;color:var(--text-muted)"> (${r.done_job}/${r.total_job} job)</span>
+                      </span>
+                    </div>
+                    <div class="seksi-bar-wrap">
+                      <div class="seksi-bar-fill" style="width:${pct}%;background:${color};transition:width 1s ease"></div>
+                    </div>
+                  </div>
+                </div>`;
+            });
+            $("#seksi-legend").html(html || '<span style="color:var(--text-muted);font-size:.85rem">Belum ada data.</span>');
+          }
+        });
+      }
 
-        // Mulai dengan auth modal
-        showAuthModal();
+      /* ── INIT TABLE ────────────────────────────────────── */
+      function initTable() {
+        table = new DataTable("#wisuda", {
+          ajax: { url: CRUD_URL + "?action=read", type: "GET" },
+          columns: [
+            { data: "seksi",      width: "15%" },
+            { data: "job",        width: "22%" },
+            { data: "pic",        width: "15%" },
+            {
+              data: "persentase", width: "13%",
+              type: "number",
+              render: (d) => pctBadge(d)
+            },
+            { data: "ket", width: "35%" }
+          ],
+          layout: {
+            top: {
+              searchPanes: {
+                show: true, initCollapsed: true,
+                columns: [0, 2], cascadePanes: true, viewTotal: true
+              }
+            },
+            topStart: {
+              buttons: [{
+                extend: "collection", text: "📤 Export",
+                buttons: ["copy", "excel", "csv", "pdf", "print"]
+              }]
+            }
+          },
+          order: [[0, "asc"]],
+          select: true,
+          responsive: true,
+        });
+
+        table.on("select deselect", function () {
+          const n = table.rows({ selected: true }).count();
+          if (isAdmin) {
+            $("#btn-edit").prop("disabled", n !== 1);
+            $("#btn-delete").prop("disabled", n !== 1);
+          }
+          selectedRowData = n === 1 ? table.rows({ selected: true }).data()[0] : null;
+        });
+
+        table.on("init", fetchChartData);
+      }
+
+      /* ── CRUD helpers ──────────────────────────────────── */
+      function clearForm() {
+        ["row-id","f-seksi","f-job","f-pic","f-persentase","f-ket"].forEach(id => $("#"+id).val(""));
+        $("#crudError").addClass("d-none").text("");
+      }
+
+      function crudPost(data, cb) {
+        $.ajax({
+          url: CRUD_URL, method: "POST", data, dataType: "json",
+          success: res => cb(res.error || null),
+          error: xhr => cb("Server error: " + xhr.statusText)
+        });
+      }
+
+      function reloadAll() {
+        table.ajax.reload(null, false);
+        fetchChartData();
+      }
+
+      /* ── BUTTONS ───────────────────────────────────────── */
+      $("#btn-add").on("click", () => {
+        clearForm();
+        $("#crudModalLabel").text("➕ Tambah Data");
+        new bootstrap.Modal(document.getElementById("crudModal")).show();
       });
+
+      $("#btn-edit").on("click", () => {
+        if (!selectedRowData) return;
+        clearForm();
+        $("#crudModalLabel").text("✏️ Edit Data");
+        $("#row-id").val(selectedRowData.id);
+        $("#f-seksi").val(selectedRowData.seksi);
+        $("#f-job").val(selectedRowData.job);
+        $("#f-pic").val(selectedRowData.pic);
+        $("#f-persentase").val(selectedRowData.persentase);
+        $("#f-ket").val(selectedRowData.ket);
+        new bootstrap.Modal(document.getElementById("crudModal")).show();
+      });
+
+      $("#btn-delete").on("click", () => {
+        if (!selectedRowData) return;
+        new bootstrap.Modal(document.getElementById("deleteModal")).show();
+      });
+
+      $("#confirmDelete").on("click", () => {
+        if (!selectedRowData) return;
+        crudPost({ action: "delete", id: selectedRowData.id }, err => {
+          if (err) { alert("Gagal: " + err); return; }
+          bootstrap.Modal.getInstance(document.getElementById("deleteModal")).hide();
+          selectedRowData = null;
+          if (isAdmin) { $("#btn-edit, #btn-delete").prop("disabled", true); }
+          reloadAll();
+        });
+      });
+
+      $("#crudSave").on("click", () => {
+        const id = $("#row-id").val();
+        crudPost({
+          action: id ? "edit" : "create", id,
+          seksi: $("#f-seksi").val(), job: $("#f-job").val(),
+          pic: $("#f-pic").val(), persentase: $("#f-persentase").val(),
+          ket: $("#f-ket").val()
+        }, err => {
+          if (err) { $("#crudError").removeClass("d-none").text(err); return; }
+          bootstrap.Modal.getInstance(document.getElementById("crudModal")).hide();
+          reloadAll();
+        });
+      });
+
+      /* ── AUTH ──────────────────────────────────────────── */
+      function showAuthModal() {
+        $("#password").val(""); $("#authError").addClass("d-none");
+        let authModal = new bootstrap.Modal(document.getElementById("authModal"));
+        authModal.show();
+
+        // submit on Enter
+        $("#password").on("keydown", function(e) {
+          if (e.key === "Enter") $("#authSubmit").trigger("click");
+        });
+
+        $("#authSubmit").off("click").on("click", function () {
+          if ($("#password").val() === "admin123") {
+            authModal.hide();
+            isAdmin = true;
+            $("#crud-buttons").show();
+            if (!table) initTable();
+            else { $("#btn-edit, #btn-delete").prop("disabled", true); }
+          } else {
+            $("#authError").removeClass("d-none");
+            if (!table) initTable();
+          }
+        });
+
+        $("#authModal").on("hidden.bs.modal", function () {
+          if (!table) initTable();
+        });
+      }
+
+      showAuthModal();
+    });
     </script>
   </body>
 </html>
